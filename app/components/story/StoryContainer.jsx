@@ -1,5 +1,9 @@
 "use client";
 
+import { useEffect } from "react";
+
+import { useMusic } from "../music/MusicProvider";
+
 import StoryScene from "./StoryScene";
 
 const scenes = [
@@ -51,7 +55,7 @@ like the story already belonged to us.`,
     text: `I woke up early
 just to see you a little longer.`,
 
-    desktopTextPosition: "bottomRight",
+    desktopTextPosition: "bottomLeft",
     mobileTextPosition: "bottomCenter",
   },
 
@@ -104,18 +108,24 @@ the silence started sitting beside me.`,
     desktopTextPosition: "bottomRight",
     mobileTextPosition: "bottomCenter",
   },
+
   {
     image: "scene11.png",
 
     text: `You asked me why
 I didn’t wait for you...
-If you had asked me this years ago,
+
+I wish
+you had asked me that
+years ago.
+
 I would have fought
 the whole world for you.`,
 
     desktopTextPosition: "bottomRight",
     mobileTextPosition: "bottomCenter",
   },
+
   {
     image: "scene12.png",
 
@@ -127,11 +137,13 @@ back to each other.`,
     desktopTextPosition: "bottomRight",
     mobileTextPosition: "bottomCenter",
   },
+
   {
     image: "scene13.png",
 
     text: `Maybe we were late
 for the life we wanted.
+
 But not too late
 to spend the last of it
 together.`,
@@ -143,6 +155,14 @@ together.`,
 ];
 
 export default function StoryContainer() {
+
+  const { playTrack } = useMusic();
+
+  useEffect(() => {
+
+    playTrack("/music/story.mp3");
+
+  }, []);
 
   return (
     <main

@@ -1,15 +1,26 @@
-
 import "./globals.css";
+
+import MusicProvider from "./components/music/MusicProvider";
 
 export const metadata = {
   title: "The Life We Almost Had",
-  description: "A cinematic romantic memory experience"
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({
+  children,
+}) {
+
   return (
     <html lang="en">
-      <body>{children}</body>
+
+      <body>
+
+        <MusicProvider>
+          {children}
+        </MusicProvider>
+
+      </body>
+
     </html>
   );
 }

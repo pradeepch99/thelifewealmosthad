@@ -5,10 +5,8 @@ import { useEffect, useState } from "react";
 import IntroScene from "./components/intro/IntroScene";
 import StoryContainer from "./components/story/StoryContainer";
 
-const FORCE_BIRTHDAY_MODE = true;
-
-const BIRTH_MONTH = 4;
-const BIRTH_DAY = 26;
+// DEFAULT FALLBACK
+const DEFAULT_BIRTHDAY_MODE = true;
 
 export default function Home() {
 
@@ -16,16 +14,16 @@ export default function Home() {
 
   useEffect(() => {
 
-    const today = new Date();
+    // ENV OVERRIDE
+    const envValue =
+      process.env.NEXT_PUBLIC_ENABLE_BIRTHDAY_MODE;
 
-    const isBirthday =
-      FORCE_BIRTHDAY_MODE ||
-      (
-        today.getMonth() === BIRTH_MONTH &&
-        today.getDate() === BIRTH_DAY
-      );
+    const ENABLE_BIRTHDAY_MODE =
+      envValue !== undefined
+        ? envValue === "true"
+        : DEFAULT_BIRTHDAY_MODE;
 
-    if (isBirthday) {
+    if (ENABLE_BIRTHDAY_MODE) {
 
       setPhase("birthdayRain");
 
@@ -38,7 +36,9 @@ export default function Home() {
       };
 
     } else {
-      setPhase("locked");
+
+      setPhase("story");
+
     }
 
   }, []);
@@ -46,27 +46,6 @@ export default function Home() {
   // STORY MODE
   if (phase === "story") {
     return <StoryContainer />;
-  }
-
-  // LOCKED MODE
-  if (phase === "locked") {
-    return (
-      <main className="flex h-screen items-center justify-center bg-black text-center text-white">
-
-        <div>
-
-          <h1 className="mb-6 text-5xl font-light tracking-[0.3em]">
-            the life we almost had
-          </h1>
-
-          <p className="text-pink-200/60">
-            Some memories return only once a year.
-          </p>
-
-        </div>
-
-      </main>
-    );
   }
 
   // INTRO MODE

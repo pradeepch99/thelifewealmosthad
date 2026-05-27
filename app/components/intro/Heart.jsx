@@ -2,15 +2,15 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useMusic } from "../music/MusicProvider";
 
 export default function Heart({ setPhase }) {
 
-  const handleClick = () => {
-
-    setTimeout(() => {
-      setPhase("story");
-    }, 1200);
-
+  const { playTrack } = useMusic();
+  
+  const handleClick = async () => {
+    await playTrack("/music/story.mp3");
+    setPhase("story");
   };
 
   return (

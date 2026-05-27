@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
-
-import { useMusic } from "../music/MusicProvider";
+import {
+  useEffect,
+  useState,
+} from "react";
 
 import StoryScene from "./StoryScene";
+import SceneIndicator from "./SceneIndicator";
 
 const scenes = [
 
@@ -55,7 +57,7 @@ like the story already belonged to us.`,
     text: `I woke up early
 just to see you a little longer.`,
 
-    desktopTextPosition: "bottomLeft",
+    desktopTextPosition: "bottomRight",
     mobileTextPosition: "bottomCenter",
   },
 
@@ -114,11 +116,9 @@ the silence started sitting beside me.`,
 
     text: `You asked me why
 I didn’t wait for you...
-
 I wish
 you had asked me that
 years ago.
-
 I would have fought
 the whole world for you.`,
 
@@ -143,7 +143,6 @@ back to each other.`,
 
     text: `Maybe we were late
 for the life we wanted.
-
 But not too late
 to spend the last of it
 together.`,
@@ -156,24 +155,58 @@ together.`,
 
 export default function StoryContainer() {
 
-  const { playTrack } = useMusic();
+  const [isLastPage, setIsLastPage] =
+    useState(false);
 
   useEffect(() => {
 
-    playTrack("/music/story.mp3");
+    const handleScroll = () => {
+
+      const scrollPosition =
+        window.innerHeight +
+        window.scrollY;
+
+      const pageHeight =
+        document.body.offsetHeight;
+
+      const difference =
+        pageHeight - scrollPosition;
+
+      console.log("difference:", difference);
+
+      setIsLastPage(difference < 120);
+    };
+
+    window.addEventListener(
+      "scroll",
+      handleScroll
+    );
+
+    return () => {
+
+      window.removeEventListener(
+        "scroll",
+        handleScroll
+      );
+    };
 
   }, []);
 
   return (
+
     <main
       className="
-        h-[100svh]
-        overflow-y-scroll
+        h-screen
         snap-y
         snap-mandatory
+        overflow-x-hidden
         bg-black
       "
     >
+
+      <SceneIndicator
+        isLast={isLastPage}
+      />
 
       {scenes.map((scene, index) => (
 
